@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Birthday Universe · Birthday Invitation by RK Studio</title>
+<meta name="description" content="A custom birthday invitation website by RK Studio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Caveat:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- QR code library (only script used). If it fails to load, a link fallback is shown. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<style>
+/* ===== THEME: change colours here (or use the Customise panel's colour picker) ===== */
+:root{
+  --night:#0b0a24; --navy:#14123f; --purple:#2a1b5e; --pink:#ff4fa3;
+  --gold:#e8cf9a; --lav:#cdbfff; --text:#f3eeff; --glass:rgba(255,255,255,.07);
+  --serif:'Cormorant Garamond',Georgia,serif; --hand:'Caveat','Segoe Script',cursive;
+  --sans:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--text);background:radial-gradient(ellipse at top,var(--purple),var(--navy) 45%,var(--night));background-attachment:fixed;line-height:1.6;overflow-x:hidden}
+body.locked{overflow:hidden;height:100vh}
+a{color:var(--gold)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#stars,#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#stars{z-index:0}#confetti{z-index:60}
+main,footer,header.top{position:relative;z-index:2}
+section{padding:80px 20px;max-width:1000px;margin:0 auto}
+h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.1}
+h2{font-size:clamp(2rem,6vw,3.2rem);text-align:center;margin-bottom:10px}
+.hand{font-family:var(--hand);color:var(--pink);font-size:1.6rem;text-align:center;display:block}
+.sub{text-align:center;color:var(--lav);margin-bottom:36px}
+.btn{font:600 1rem var(--sans);cursor:pointer;border:0;border-radius:999px;padding:14px 28px;color:#1a1033;background:linear-gradient(135deg,var(--gold),#fff1cf);box-shadow:0 0 28px rgba(232,207,154,.35);transition:transform .2s,box-shadow .2s;text-decoration:none;display:inline-block}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(232,207,154,.6)}
+.btn.ghost{background:var(--glass);color:var(--text);border:1px solid rgba(255,255,255,.25);box-shadow:none}
+.card{background:var(--glass);border:1px solid rgba(255,255,255,.14);border-radius:22px;padding:26px;backdrop-filter:blur(10px)}
+.demo-tag{display:inline-block;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);border:1px dashed var(--gold);border-radius:999px;padding:4px 12px}
+/* Welcome */
+#welcome{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;background:radial-gradient(circle at 50% 40%,#3b1f7a,var(--navy) 55%,var(--night));transition:opacity 1s,transform 1s,visibility 1s}
+#welcome.gone{opacity:0;transform:scale(1.15);visibility:hidden}
+#welcome h1{font-size:clamp(2.2rem,8vw,4.6rem);max-width:12em;margin:24px 0 8px;text-shadow:0 0 30px rgba(255,79,163,.5)}
+#welcome p{color:var(--lav);margin-bottom:28px}
+.env{width:150px;height:104px;position:relative;animation:bob 3s ease-in-out infinite;filter:drop-shadow(0 0 28px var(--pink))}
+.env .body{position:absolute;inset:0;background:linear-gradient(160deg,#fff1cf,var(--gold));border-radius:8px}
+.env .flap{position:absolute;top:0;left:0;right:0;height:60px;background:linear-gradient(180deg,#f6dfae,#d9bd85);clip-path:polygon(0 0,100% 0,50% 100%);border-radius:8px 8px 0 0}
+.env .seal{position:absolute;left:50%;top:44px;transform:translateX(-50%);width:34px;height:34px;border-radius:50%;background:var(--pink);box-shadow:0 0 18px var(--pink);display:grid;place-items:center;color:#fff;font-size:1rem}
+@keyframes bob{50%{transform:translateY(-12px) rotate(-2deg)}}
+/* Hero */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
+.orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.45;will-change:transform}
+.orb.a{width:260px;height:260px;background:var(--pink);top:8%;left:-60px}
+.orb.b{width:300px;height:300px;background:#6b4bff;bottom:6%;right:-80px}
+#hero .invited{font-family:var(--hand);font-size:clamp(1.8rem,6vw,2.6rem);color:var(--gold)}
+#hero .name{font-size:clamp(3.4rem,17vw,9rem);background:linear-gradient(135deg,#fff,var(--lav) 40%,var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;word-break:break-word}
+.age{font-family:var(--serif);font-size:clamp(6rem,30vw,15rem);line-height:.9;color:var(--gold);text-shadow:0 0 20px var(--pink),0 0 60px var(--pink),0 0 100px rgba(255,79,163,.5);animation:glow 3s ease-in-out infinite alternate}
+@keyframes glow{from{filter:brightness(.9)}to{filter:brightness(1.25)}}
+#hero .msg{max-width:34em;color:var(--lav);margin:18px auto 24px}
+.balloons{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.balloon{position:absolute;bottom:-120px;width:34px;height:44px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;opacity:.55;animation:rise linear infinite}
+.balloon:after{content:"";position:absolute;left:50%;top:100%;width:1px;height:50px;background:rgba(255,255,255,.4)}
+@keyframes rise{to{transform:translateY(-120vh) translateX(30px)}}
+/* Countdown */
+.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:640px;margin:0 auto}
+.cd div{text-align:center;padding:18px 6px}
+.cd b{display:block;font:700 clamp(2rem,9vw,3.4rem) var(--serif);color:var(--gold)}
+.cd span{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--lav)}
+#cdDone{text-align:center;font-family:var(--serif);font-size:1.8rem;color:var(--pink)}
+/* Details */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.item h3{font-size:1.4rem;color:var(--gold);margin-bottom:6px}
+.timeline{list-style:none;border-left:2px solid var(--pink);margin:10px 0 0 8px;padding-left:20px}
+.timeline li{margin-bottom:12px;position:relative}
+.timeline li:before{content:"";position:absolute;left:-27px;top:8px;width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+.timeline b{color:var(--gold)}
+/* Gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.frame{aspect-ratio:4/3;border-radius:18px;overflow:hidden;border:2px solid rgba(232,207,154,.5);padding:0;background:linear-gradient(135deg,var(--purple),var(--pink));cursor:pointer;position:relative;transition:transform .3s,box-shadow .3s}
+.frame:hover{transform:translateY(-6px) rotate(-1deg);box-shadow:0 14px 36px rgba(255,79,163,.35)}
+.frame img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.frame:hover img{transform:scale(1.08)}
+.frame .fb{position:absolute;inset:0;display:none;place-items:center;font:700 1.3rem var(--serif);color:#fff;text-align:center;padding:10px}
+.frame.broken img{display:none}.frame.broken .fb{display:grid}
+#lightbox{position:fixed;inset:0;z-index:80;background:rgba(5,4,20,.92);display:none;place-items:center;padding:20px}
+#lightbox.open{display:grid}
+#lightbox img{max-width:100%;max-height:80vh;border-radius:14px;border:2px solid var(--gold)}
+#lightbox .x{position:absolute;top:16px;right:16px}
+
+/* Map */
+.map{border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.2);aspect-ratio:16/9;background:#101035;position:relative}
+.map svg,.map iframe{width:100%;height:100%;display:block;border:0}
+.pin-ping{transform-box:fill-box;transform-origin:center;animation:ping 2s ease-out infinite}
+@keyframes ping{from{transform:scale(.4);opacity:.9}to{transform:scale(2.6);opacity:0}}
+/* Message */
+.quote{font-family:var(--serif);font-size:clamp(1.3rem,4vw,1.9rem);text-align:center;font-style:italic;max-width:30em;margin:0 auto}
+/* Forms */
+label{display:block;font-size:.85rem;color:var(--lav);margin:12px 0 4px}
+input,select,textarea{width:100%;font:1rem var(--sans);color:var(--text);background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:12px}
+input[type=color]{padding:2px;height:46px}
+select option{color:#111}
+.err{color:#ff9ec7;font-size:.85rem;min-height:1.2em}
+.note{font-size:.85rem;color:var(--lav);margin-top:10px}
+.ok{margin-top:14px;padding:14px;border-radius:12px;background:rgba(232,207,154,.15);border:1px solid var(--gold)}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 16px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:20px}
+#qr{background:#fff;padding:12px;border-radius:14px;width:fit-content;margin:16px auto;min-height:40px}
+/* Pricing + footer */
+.price{text-align:center;border:2px solid var(--gold);box-shadow:0 0 50px rgba(232,207,154,.2)}
+.price .big{font:700 clamp(2.4rem,9vw,4rem) var(--serif);color:var(--gold)}
+.price ul{list-style:none;margin:16px auto;max-width:30em;text-align:left}
+.price li:before{content:"✦ ";color:var(--pink)}
+footer{text-align:center;padding:50px 20px 90px;border-top:1px solid rgba(255,255,255,.12)}
+footer .tag{font-family:var(--hand);color:var(--pink);font-size:1.5rem}
+#music{position:fixed;right:16px;bottom:16px;z-index:70;width:52px;height:52px;border-radius:50%;padding:0;font-size:1.3rem}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--gold);color:#1a1033;padding:12px 22px;border-radius:999px;font-weight:600;opacity:0;pointer-events:none;transition:.3s;z-index:90;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .9s,transform .9s}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}html{scroll-behavior:auto}}
+@media print{#stars,#confetti,#welcome,#music,.toast{display:none}}
+</style>
+</head>
+<body class="locked">
+<canvas id="stars" aria-hidden="true"></canvas>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<!-- ============ WELCOME SCREEN ============ -->
+<div id="welcome" role="dialog" aria-label="Welcome">
+  <div class="env" aria-hidden="true"><div class="body"></div><div class="flap"></div><div class="seal">★</div></div>
+  <h1>A Little Magic. A Lot of Memories.</h1>
+  <p>An invitation is waiting for <span data-bind="name">Aadhira</span>'s guests…</p>
+  <button class="btn" id="openBtn">Open Your Invitation</button>
+</div>
+
+<main id="top">
+<!-- ============ HERO ============ -->
+<section id="hero" aria-labelledby="heroName">
+  <div class="orb a" data-speed="0.15"></div><div class="orb b" data-speed="-0.12"></div>
+  <div class="balloons" id="balloons" aria-hidden="true"></div>
+  <span class="demo-tag">A celebration made just for you</span>
+  <p class="invited" style="margin-top:18px">You're Invited!</p>
+  <h2 class="name" id="heroName" data-bind="name" style="margin:0">Aadhira</h2>
+  <div class="age" data-bind="age" aria-label="Turning age">21</div>
+  <p class="msg" data-bind="message">Step into a universe made of stars, laughter and everyone who matters most. Join us for an evening of music, light and memories to last a lifetime.</p>
+  <a class="btn" href="#rsvp">RSVP Now</a>
+</section>
+
+<!-- ============ COUNTDOWN ============ -->
+<section id="countdown" class="reveal" aria-labelledby="cdh">
+  <span class="hand">Counting down to the magic</span>
+  <h2 id="cdh">The Celebration Begins In</h2>
+  <p class="sub">Live countdown to <strong data-bind="dateText">15 November 2026, 6:30 PM</strong></p>
+  <div class="cd" id="cd" role="timer" aria-live="off">
+    <div class="card"><b id="d">00</b><span>Days</span></div>
+    <div class="card"><b id="h">00</b><span>Hours</span></div>
+    <div class="card"><b id="m">00</b><span>Minutes</span></div>
+    <div class="card"><b id="s">00</b><span>Seconds</span></div>
+  </div>
+  <p id="cdDone" hidden>✨ The celebration is happening now — let the magic begin! ✨</p>
+</section>
+
+<!-- ============ EVENT DETAILS ============ -->
+<section id="details" class="reveal" aria-labelledby="dh">
+  <span class="hand">Save the date</span>
+  <h2 id="dh">Event Details</h2>
+  <p class="sub">Birthday Celebration · Theme: The Birthday Universe</p>
+  <div class="grid">
+    <div class="card item"><h3>Date</h3><p data-bind="dateOnly">15 November 2026</p></div>
+    <div class="card item"><h3>Time</h3><p data-bind="timeOnly">6:30 PM</p></div>
+    <div class="card item"><h3>Venue</h3><p data-bind="venue">The Moonlight Garden, Coimbatore</p></div>
+    <div class="card item"><h3>Dress Code</h3><p>Celestial chic — midnight blues, purples, a touch of gold or sparkle.</p></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3 style="color:var(--gold);font-size:1.4rem">Evening Schedule</h3>
+    <ol class="timeline">
+      <li><b>6:30 PM</b> — Welcome &amp; starlit drinks</li>
+      <li><b>7:15 PM</b> — Music &amp; first dance</li>
+      <li><b>8:00 PM</b> — Dinner under the lights</li>
+      <li><b>9:00 PM</b> — Cake &amp; wishes</li>
+      <li><b>9:30 PM</b> — Dance the night away</li>
+    </ol>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3 style="color:var(--gold);font-size:1.4rem;margin-bottom:12px">Venue Map</h3>
+    <div class="map">
+      <svg id="mapSvg" viewBox="0 0 640 360" role="img" aria-label="Illustrated map with a pin marking the venue">
+        <rect width="640" height="360" fill="#14123f"/>
+        <path d="M-10 260C120 220 200 300 330 250S520 200 650 240V380H-10Z" fill="#1c2a6b" opacity=".75"/>
+        <rect x="60" y="40" width="130" height="80" rx="10" fill="#1d3b52" opacity=".8"/>
+        <rect x="430" y="50" width="150" height="90" rx="10" fill="#1d3b52" opacity=".8"/>
+        <g stroke="#cdbfff" stroke-opacity=".35" fill="none" stroke-linecap="round">
+          <path d="M0 150H640" stroke-width="10"/><path d="M0 310H640" stroke-width="6"/>
+          <path d="M210 0V360" stroke-width="10"/><path d="M410 0V360" stroke-width="6"/>
+          <path d="M0 60L640 330" stroke-width="5"/>
+        </g>
+        <g fill="#cdbfff" fill-opacity=".1"><rect x="230" y="20" width="160" height="110" rx="6"/><rect x="230" y="170" width="160" height="120" rx="6"/><rect x="430" y="170" width="170" height="110" rx="6"/><rect x="30" y="170" width="160" height="110" rx="6"/></g>
+        <circle class="pin-ping" cx="320" cy="150" r="22" style="fill:var(--pink)"/>
+        <path d="M320 178C300 150 296 138 296 126a24 24 0 0 1 48 0c0 12-4 24-24 52Z" style="fill:var(--pink)" stroke="#fff" stroke-width="2"/>
+        <circle cx="320" cy="126" r="9" fill="#fff"/>
+        <g transform="translate(320 205)"><rect x="-110" y="0" width="220" height="44" rx="12" fill="#0b0a24" fill-opacity=".85" stroke="#e8cf9a"/>
+        <text y="19" text-anchor="middle" fill="#e8cf9a" font-family="Inter,sans-serif" font-size="14" font-weight="600">The Moonlight Garden</text>
+        <text y="35" text-anchor="middle" fill="#cdbfff" font-family="Inter,sans-serif" font-size="11">Celebration venue</text></g>
+      </svg>
+      <iframe id="mapLive" title="Map of Coimbatore" loading="lazy" hidden referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <p class="note">Explore the venue area on the map, or load a live Google Map of Coimbatore.</p>
+    <div class="actions" style="margin-top:12px"><button class="btn ghost" id="liveMapBtn" type="button" aria-pressed="false">Show live map preview</button></div>
+  </div>
+  <div class="actions">
+    <!-- DIRECTIONS: replace the query with your real venue address -->
+    <a class="btn" id="dirLink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Coimbatore">Get Directions</a>
+  </div>
+  <p class="note" style="text-align:center">Directions open Google Maps for the selected venue.</p>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section id="gallery" class="reveal" aria-labelledby="gh">
+  <span class="hand">Memory lane</span>
+  <h2 id="gh">Memory Gallery</h2>
+  <p class="sub">A collection of moments to make the celebration unforgettable.</p>
+  <div class="gallery" id="galleryGrid"></div>
+</section>
+<div id="lightbox" role="dialog" aria-label="Photo viewer" aria-modal="true">
+  <button class="btn ghost x" id="lbClose">Close ✕</button>
+  <img id="lbImg" alt="">
+</div>
+
+<!-- ============ BIRTHDAY MESSAGE ============ -->
+<section id="note" class="reveal" aria-labelledby="mh">
+  <h2 id="mh">A Note From the Heart</h2>
+  <p class="quote" style="margin-top:24px">“Every star in this sky is a moment we've shared. Come add a few more — your presence is the brightest gift of all.”</p>
+</section>
+
+<!-- ============ RSVP ============ -->
+<section id="rsvp" class="reveal" aria-labelledby="rh">
+  <span class="hand">Will you join us?</span>
+  <h2 id="rh">RSVP</h2>
+  <div class="card" style="max-width:560px;margin:0 auto">
+    <p class="note" style="margin:0 0 6px">Share your response to let the host know whether you can join the celebration.</p>
+    <form id="rsvpForm" novalidate>
+      <label for="rName">Your name</label>
+      <input id="rName" autocomplete="off" maxlength="40"><div class="err" id="eName" role="alert"></div>
+      <label for="rAtt">Attendance</label>
+      <select id="rAtt"><option value="">Choose…</option><option value="yes">Joyfully accepting</option><option value="no">Regretfully declining</option></select><div class="err" id="eAtt" role="alert"></div>
+      <label for="rGuests">Number of guests (including you)</label>
+      <input id="rGuests" type="number" min="1" max="10" value="1"><div class="err" id="eGuests" role="alert"></div>
+      <button class="btn" type="submit" style="margin-top:10px;width:100%">Send RSVP</button>
+    </form>
+    <div class="ok" id="rsvpOk" hidden role="status"></div>
+  </div>
+</section>
+
+<!-- ============ CELEBRATE + SHARE ============ -->
+<section id="share" class="reveal" aria-labelledby="sh">
+  <span class="hand">Spread the joy</span>
+  <h2 id="sh">Celebrate &amp; Share</h2>
+  <div class="actions">
+    <button class="btn" id="confBtn">🎉 Celebrate</button>
+    <button class="btn ghost" id="shareBtn">Share Invitation</button>
+    <button class="btn ghost" id="copyBtn">Copy Link</button>
+  </div>
+  <div id="qr" aria-label="QR code for this page"></div>
+  <p class="note" style="text-align:center" id="qrNote">Scan to open this page.</p>
+  <div class="actions" style="margin-top:0">
+    <button class="btn ghost" id="qrSave">Save QR</button>
+    <button class="btn ghost" id="qrPrint">Print</button>
+  </div>
+</section>
+
+<!-- ============ CUSTOMISE ============ -->
+<section id="customise" class="reveal" aria-labelledby="ch">
+  <span class="hand">Try it yourself</span>
+  <h2 id="ch">Customise Your Celebration</h2>
+  <p class="sub">Personalise the details to create a celebration that feels uniquely yours.</p>
+  <div class="card">
+    <div class="row">
+      <div><label for="cName">Birthday person's name</label><input id="cName" maxlength="24"></div>
+      <div><label for="cAge">Age</label><input id="cAge" type="number" min="1" max="120"></div>
+      <div><label for="cDate">Event date &amp; time</label><input id="cDate" type="datetime-local"></div>
+      <div><label for="cColor">Theme colour</label><input id="cColor" type="color"></div>
+    </div>
+    <label for="cVenue">Event venue</label><input id="cVenue" maxlength="80">
+    <label for="cMsg">Invitation message</label><textarea id="cMsg" rows="3" maxlength="220"></textarea>
+    <div class="actions"><button class="btn ghost" id="resetBtn">Reset details</button></div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section id="pricing" class="reveal" aria-labelledby="ph">
+  <div class="card price">
+    <span class="hand">RK Studio</span>
+    <h2 id="ph">Custom Birthday &amp; Party Invitation Website</h2>
+    <!-- PRICE: edit here -->
+    <div class="big">₹800</div>
+    <p>Fixed price. Includes:</p>
+    <ul>
+      <li>Custom visual design</li><li>Event details</li><li>Countdown timer</li><li>Photo gallery</li>
+      <li>Venue directions</li><li>QR code</li><li>Responsive layout</li><li>One revision</li>
+    </ul>
+    <p class="note">Advanced features or additional work outside this scope may cost extra.</p>
+    <p style="margin:18px 0 6px"><strong>Want your own custom invitation website? Contact RK Studio.</strong></p>
+</div>
+</section>
+</main>
+
+<footer>
+  <p>Designed with love by RK Studio</p>
+  <p class="tag">We Build. You Grow.</p>
+</footer>
+
+<button class="btn" id="music" aria-label="Play background music" aria-pressed="false">♪</button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   HOW TO CUSTOMISE (for RK Studio)
+   - Event details: edit DEMO below (name, age, date, venue, message).
+   - Date format for DEMO.date: "YYYY-MM-DDTHH:MM" (local time).
+   - Images: edit the PHOTOS array (replace url with customer photo URLs).
+   - Colours: edit the :root variables in the CSS (--pink is the accent).
+   - Contact info & price: search for "CONTACT" and "PRICE" in the HTML.
+   - Map: change the query= value of the #dirLink href in the HTML.
+   ===================================================================== */
+const DEMO = {
+  name: "Aadhira", age: 21, date: "2026-11-15T18:30",
+  venue: "The Moonlight Garden, Coimbatore", color: "#ff4fa3",
+  message: "Step into a universe made of stars, laughter and everyone who matters most. Join us for an evening of music, light and memories to last a lifetime."
+};
+/* Sample gallery images are illustrated scenes drawn inline (no network needed, always load).
+   To use real photos, replace each url with the customer's image URL, e.g. {url:"photos/aadhira1.jpg", alt:"Aadhira at 18"} */
+function sky(){let o='',r=7;for(let i=0;i<45;i++){r=(r*9301+49297)%233280;const x=r/233280*800;r=(r*9301+49297)%233280;const y=r/233280*600;o+='<circle cx="'+x.toFixed(0)+'" cy="'+y.toFixed(0)+'" r="'+(1+i%3*.7)+'" fill="#fff" opacity=".7"/>'}return o}
+function scene(a,b,body){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+a+'"/><stop offset="1" stop-color="'+b+'"/></linearGradient><radialGradient id="m"><stop offset="0" stop-color="#fff1cf"/><stop offset="1" stop-color="#e8cf9a"/></radialGradient></defs><rect width="800" height="600" fill="url(#g)"/>'+sky()+body+'</svg>')}
+const hills='<path d="M0 470Q200 390 400 455T800 425V600H0Z" fill="#14123f"/><path d="M0 535Q250 470 500 525T800 505V600H0Z" fill="#0b0a24"/>';
+const SCN={
+  moon:()=>'<circle cx="400" cy="230" r="150" fill="#e8cf9a" opacity=".12"/><circle cx="400" cy="230" r="95" fill="url(#m)"/><circle cx="372" cy="205" r="16" fill="#e8cf9a" opacity=".5"/><circle cx="430" cy="255" r="22" fill="#e8cf9a" opacity=".4"/>'+hills,
+  balloons:()=>[['#ff4fa3',200,230],['#e8cf9a',330,180],['#9b7bff',460,240],['#cdbfff',590,190],['#ff4fa3',400,330]].map(([c,x,y])=>'<path d="M'+x+' '+(y+66)+'Q'+(x+14)+' '+(y+190)+' '+(x-6)+' 540" stroke="#fff" stroke-opacity=".5" fill="none"/><ellipse cx="'+x+'" cy="'+y+'" rx="52" ry="66" fill="'+c+'"/><ellipse cx="'+(x-16)+'" cy="'+(y-24)+'" rx="10" ry="16" fill="#fff" opacity=".35"/>').join(''),
+  cake:()=>'<ellipse cx="400" cy="486" rx="210" ry="20" fill="#e8cf9a"/><rect x="270" y="390" width="260" height="95" rx="12" fill="#ff4fa3"/><rect x="310" y="320" width="180" height="72" rx="12" fill="#e8cf9a"/><rect x="350" y="265" width="100" height="58" rx="12" fill="#cdbfff"/><path d="M270 400q20 24 40 0t40 0 40 0 40 0 40 0 40 0 40 0" stroke="#fff" stroke-width="6" fill="none" opacity=".8"/>'+[375,400,425].map(x=>'<rect x="'+(x-3)+'" y="228" width="6" height="38" fill="#fff"/><ellipse cx="'+x+'" cy="216" rx="7" ry="14" fill="#ffb347"/>').join(''),
+  lights:()=>{let pts=[],b='';for(let x=-10;x<=810;x+=20)pts.push(x+' '+(150+60*Math.sin(x/130)));for(let x=40;x<800;x+=90){const y=150+60*Math.sin(x/130)+14;b+='<circle cx="'+x+'" cy="'+y+'" r="26" fill="#e8cf9a" opacity=".2"/><circle cx="'+x+'" cy="'+y+'" r="10" fill="'+(x%180<90?'#fff1cf':'#ff4fa3')+'"/>'}return '<polyline points="'+pts.join(' ')+'" stroke="#e8cf9a" stroke-width="3" fill="none"/>'+b+hills},
+  gift:()=>'<rect x="290" y="340" width="220" height="150" rx="8" fill="#ff4fa3"/><rect x="274" y="300" width="252" height="48" rx="8" fill="#e8cf9a"/><rect x="384" y="300" width="32" height="190" fill="#fff1cf"/><ellipse cx="360" cy="280" rx="44" ry="28" fill="none" stroke="#fff1cf" stroke-width="14"/><ellipse cx="440" cy="280" rx="44" ry="28" fill="none" stroke="#fff1cf" stroke-width="14"/><circle cx="400" cy="290" r="12" fill="#fff1cf"/>'+hills,
+  fireworks:()=>[[220,230,'#ff4fa3'],[570,170,'#e8cf9a'],[410,350,'#cdbfff']].map(([x,y,c])=>{let l='';for(let i=0;i<16;i++){const a=i*Math.PI/8;l+='<line x1="'+(x+Math.cos(a)*22).toFixed(0)+'" y1="'+(y+Math.sin(a)*22).toFixed(0)+'" x2="'+(x+Math.cos(a)*(80+i%2*30)).toFixed(0)+'" y2="'+(y+Math.sin(a)*(80+i%2*30)).toFixed(0)+'" stroke="'+c+'" stroke-width="4" stroke-linecap="round"/>'}return l+'<circle cx="'+x+'" cy="'+y+'" r="8" fill="#fff"/>'}).join('')+hills
+};
+const PHOTOS = [ /* Gallery images — replace with customer photos */
+  {url:scene('#3b1f7a','#0b0a24',SCN.moon()), alt:"Golden moon over a night garden"},
+  {url:scene('#2a1b5e','#ff4fa3',SCN.balloons()), alt:"Floating party balloons"},
+  {url:scene('#14123f','#6b4bff',SCN.cake()), alt:"Birthday cake with candles"},
+  {url:scene('#0b0a24','#3b1f7a',SCN.lights()), alt:"String lights in a garden"},
+  {url:scene('#2a1b5e','#14123f',SCN.gift()), alt:"Wrapped birthday gift"},
+  {url:scene('#0b0a24','#2a1b5e',SCN.fireworks()), alt:"Fireworks in the night sky"}
+];
+
+const $ = id => document.getElementById(id);
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let state = {...DEMO};
+
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),2600)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+/* ---------- Render state to the page ---------- */
+function render(){
+  const dt = new Date(state.date);
+  const valid = !isNaN(dt);
+  const dOnly = valid ? dt.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) : '—';
+  const tOnly = valid ? dt.toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase() : '—';
+  const map = {name:state.name||'Your Name', age:state.age||'—', venue:state.venue||'Your venue', message:state.message||'', dateOnly:dOnly, timeOnly:tOnly, dateText:dOnly+', '+tOnly};
+  document.querySelectorAll('[data-bind]').forEach(el=>el.textContent=map[el.dataset.bind]);
+  document.documentElement.style.setProperty('--pink', state.color);
+  $('dirLink').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent((state.venue||'Coimbatore'));
+  tick();
+}
+
+/* ---------- Countdown ---------- */
+function tick(){
+  const target = new Date(state.date).getTime();
+  const diff = target - Date.now();
+  const done = isNaN(target) || diff <= 0;
+  $('cd').hidden = done; $('cdDone').hidden = !done;
+  if(done) return;
+  const p = n => String(n).padStart(2,'0');
+  $('d').textContent = p(Math.floor(diff/864e5));
+  $('h').textContent = p(Math.floor(diff/36e5)%24);
+  $('m').textContent = p(Math.floor(diff/6e4)%60);
+  $('s').textContent = p(Math.floor(diff/1e3)%60);
+}
+setInterval(tick,1000);
+
+/* ---------- Welcome ---------- */
+$('openBtn').addEventListener('click',()=>{
+  $('welcome').classList.add('gone'); document.body.classList.remove('locked');
+  $('welcome').setAttribute('aria-hidden','true');
+  setTimeout(()=>{ $('heroName').scrollIntoView({block:'center'}); },50);
+  burst(70);
+});
+
+/* ---------- Reveal on scroll ---------- */
+const io = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- Parallax ---------- */
+if(!reduced){
+  let ticking=false;
+  addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{
+    const y=scrollY;document.querySelectorAll('.orb').forEach(o=>o.style.transform='translateY('+(y*o.dataset.speed)+'px)');ticking=false;});},{passive:true});
+}
+
+/* ---------- Starfield ---------- */
+(function(){
+  const c=$('stars'),x=c.getContext('2d');let W,H,stars=[];
+  function size(){W=c.width=innerWidth;H=c.height=innerHeight;stars=Array.from({length:Math.min(140,Math.floor(W*H/9000))},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.6+.3,p:Math.random()*6.28,s:Math.random()*.02+.005}))}
+  size();addEventListener('resize',size);
+  function draw(){x.clearRect(0,0,W,H);for(const s of stars){s.p+=s.s;x.globalAlpha=.4+.6*Math.abs(Math.sin(s.p));x.fillStyle=s.r>1.3?'#e8cf9a':'#fff';x.beginPath();x.arc(s.x,s.y,s.r,0,6.28);x.fill()}if(!reduced)requestAnimationFrame(draw)}
+  draw();
+})();
+
+/* ---------- Floating balloons ---------- */
+(function(){
+  if(reduced)return;const b=$('balloons'),cols=['#ff4fa3','#e8cf9a','#9b7bff','#cdbfff'];
+  for(let i=0;i<7;i++){const e=document.createElement('i');e.className='balloon';
+    e.style.cssText='left:'+(5+i*14)+'%;background:'+cols[i%4]+';animation-duration:'+(16+i*3)+'s;animation-delay:-'+(i*4)+'s';b.appendChild(e)}
+})();
+
+/* ---------- Confetti ---------- */
+const cc=$('confetti'),cx=cc.getContext('2d');let parts=[],run=false;
+function fit(){cc.width=innerWidth;cc.height=innerHeight}fit();addEventListener('resize',fit);
+function burst(n){
+  if(reduced){toast('🎉 Happy Birthday!');return}
+  const cols=['#ff4fa3','#e8cf9a','#cdbfff','#fff','#9b7bff'];
+  for(let i=0;i<n;i++)parts.push({x:innerWidth/2,y:innerHeight*.6,vx:(Math.random()-.5)*14,vy:-Math.random()*14-4,g:.28,w:Math.random()*7+4,h:Math.random()*4+3,a:Math.random()*6.28,va:(Math.random()-.5)*.4,c:cols[i%5],life:150+Math.random()*60});
+  if(!run){run=true;requestAnimationFrame(loop)}
+}
+function loop(){
+  cx.clearRect(0,0,cc.width,cc.height);
+  parts=parts.filter(p=>p.life>0&&p.y<cc.height+20);
+  for(const p of parts){p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.vx*=.99;p.a+=p.va;p.life--;cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.globalAlpha=Math.min(1,p.life/40);cx.fillStyle=p.c;cx.fillRect(-p.w/2,-p.h/2,p.w,p.h);cx.restore()}
+  if(parts.length)requestAnimationFrame(loop);else{run=false;cx.clearRect(0,0,cc.width,cc.height)}
+}
+$('confBtn').addEventListener('click',()=>burst(120));
+
+/* ---------- Gallery + lightbox ---------- */
+const grid=$('galleryGrid');
+PHOTOS.forEach((p,i)=>{
+  const b=document.createElement('button');b.className='frame';b.type='button';b.setAttribute('aria-label','Open photo '+(i+1));
+  b.innerHTML='<img loading="lazy" width="800" height="600" alt="'+esc(p.alt)+'" src="'+esc(p.url)+'"><span class="fb">✦ Memory '+(i+1)+'<br>(photo unavailable)</span>';
+  b.querySelector('img').addEventListener('error',()=>b.classList.add('broken'));
+  b.addEventListener('click',()=>{if(b.classList.contains('broken'))return toast('Photo unavailable');$('lbImg').src=p.url;$('lbImg').alt=p.alt;$('lightbox').classList.add('open');$('lbClose').focus()});
+  grid.appendChild(b);
+});
+function closeLb(){$('lightbox').classList.remove('open')}
+$('lbClose').addEventListener('click',closeLb);
+$('lightbox').addEventListener('click',e=>{if(e.target.id==='lightbox')closeLb()});
+addEventListener('keydown',e=>{if(e.key==='Escape')closeLb()});
+
+/* ---------- RSVP ---------- */
+$('rsvpForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const n=$('rName').value.trim(),a=$('rAtt').value,g=parseInt($('rGuests').value,10);
+  $('eName').textContent=n.length<2?'Please enter your name.':'';
+  $('eAtt').textContent=a?'':'Please choose an option.';
+  $('eGuests').textContent=(g>=1&&g<=10)?'':'Guests must be between 1 and 10.';
+  if(n.length<2||!a||!(g>=1&&g<=10))return;
+  const ok=$('rsvpOk');ok.hidden=false;
+  ok.innerHTML='<strong>Thank you, '+esc(n)+'!</strong> '+(a==='yes'?'Your RSVP for '+g+' guest(s) has been noted.':'Your reply has been noted.')+'<br><small>Your response has been recorded on this page.</small>';
+  if(a==='yes')burst(60);
+});
+
+/* ---------- Share, copy link, QR ---------- */
+const url=()=>location.href.split('#')[0];
+async function copy(){
+  try{await navigator.clipboard.writeText(url());toast('Link copied!')}
+  catch{const t=document.createElement('textarea');t.value=url();document.body.appendChild(t);t.select();try{document.execCommand('copy');toast('Link copied!')}catch{toast('Copy failed — please copy from the address bar')}t.remove()}
+}
+$('copyBtn').addEventListener('click',copy);
+$('shareBtn').addEventListener('click',async()=>{
+  if(navigator.share){try{await navigator.share({title:'You\'re invited!',text:'Join us for a Birthday Universe celebration ✨',url:url()})}catch(e){}}
+  else copy();
+});
+function makeQR(){
+  const box=$('qr');
+  if(!window.QRCode){$('qrNote').innerHTML='QR code could not load. Link: <a href="'+esc(url())+'">'+esc(url())+'</a>';return}
+  box.innerHTML='';new QRCode(box,{text:url(),width:160,height:160,colorDark:'#14123f',colorLight:'#ffffff'});
+}
+addEventListener('load',()=>setTimeout(makeQR,300));
+function qrCanvas(){return $('qr').querySelector('canvas')}
+$('qrSave').addEventListener('click',()=>{
+  const c=qrCanvas();if(!c)return toast('QR code not ready yet');
+  const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='invitation-qr.png';a.click();
+});
+$('qrPrint').addEventListener('click',()=>{
+  if(!qrCanvas())return toast('QR code not ready yet');
+  document.querySelectorAll('main section,footer').forEach(s=>{if(s.id!=='share')s.dataset.h=s.style.display,s.style.display='none'});
+  print();
+  document.querySelectorAll('main section,footer').forEach(s=>{if(s.id!=='share')s.style.display=s.dataset.h||''});
+});
+
+/* ---------- Music (generated with Web Audio; starts only after click) ---------- */
+let ac,gain,playing=false,timer;
+function note(f,t,d){const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.12,t+.3);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(gain);o.start(t);o.stop(t+d)}
+function loopMusic(){
+  const chords=[[261.6,329.6,392],[220,261.6,329.6],[174.6,220,261.6],[196,246.9,293.7]];let i=0;
+  const play=()=>{const t=ac.currentTime+.05;chords[i%4].forEach((f,k)=>note(f,t+k*.25,3.6));note(chords[i%4][2]*2,t+1.2,2);i++};
+  play();timer=setInterval(play,3600);
+}
+$('music').addEventListener('click',()=>{
+  const b=$('music');
+  if(!playing){
+    try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();gain=gain||ac.createGain();gain.gain.value=.8;gain.connect(ac.destination);ac.resume();loopMusic();playing=true}
+    catch{return toast('Audio not supported on this device')}
+  }else{clearInterval(timer);ac.suspend();playing=false;gain.disconnect();gain=null}
+  b.textContent=playing?'❚❚':'♪';b.setAttribute('aria-pressed',playing);b.setAttribute('aria-label',playing?'Pause background music':'Play background music');
+});
+
+/* ---------- Customise panel ---------- */
+const ins={name:'cName',age:'cAge',date:'cDate',color:'cColor',venue:'cVenue',message:'cMsg'};
+function syncInputs(){for(const k in ins)$(ins[k]).value=state[k]}
+for(const k in ins)$(ins[k]).addEventListener('input',e=>{state[k]=k==='age'?e.target.value:e.target.value;render()});
+$('resetBtn').addEventListener('click',()=>{state={...DEMO};syncInputs();render();toast('Reset details details')});
+
+/* ---------- Live map preview toggle ---------- */
+$('liveMapBtn').addEventListener('click',()=>{
+  const f=$('mapLive'),sv=$('mapSvg'),b=$('liveMapBtn'),show=f.hidden;
+  if(show&&!f.src)f.src='https://www.google.com/maps?q='+encodeURIComponent('Coimbatore, Tamil Nadu')+'&output=embed';
+  f.hidden=!show;sv.style.display=show?'none':'block';
+  b.textContent=show?'Show illustrated map':'Show live map preview';b.setAttribute('aria-pressed',show);
+});
+
+syncInputs();render();
+</script>
+</body>
+</html>
